@@ -10,10 +10,10 @@ from rosbags.image import message_to_cvimage
 def read_bag_file(bagpath):
     bag_id = os.path.basename(bagpath).split(".")[0]
     # Set up the video writer
-    video_name = bagpath.with_suffix('.avi')
-    video_path = os.path.join("videos", video_name)
+    video_path = os.path.join("videos", bag_id + ".avi")
     fourcc = cv2.VideoWriter_fourcc(*'XVID')
-    out = cv2.VideoWriter(video_path, fourcc, 15.0, (640, 480))
+    video_out = cv2.VideoWriter(video_path, fourcc, 15.0, (640, 480))
+    print("Writing video to: ", video_path)
 
     # Create a type store to use if the bag has no message definitions.
     typestore = get_typestore(Stores.ROS2_FOXY)
@@ -24,14 +24,15 @@ def read_bag_file(bagpath):
         for connection, timestamp, rawdata in reader.messages(connections=connections):
             msg = reader.deserialize(rawdata, connection.msgtype)
             if msg.__msgtype__ == "sensor_msgs/msg/Image" and msg.header.frame_id == "CameraTop_optical_frame":
-                print("sec: ", msg.header.stamp.sec)
                 img = message_to_cvimage(msg, 'bgr8') # change encoding type if needed
-                out.write(img)
-                frame_dir = os.path.join("frames", bag_id)
-                if not os.path.exists(frame_dir):
-                    os.makedirs(frame_dir)
-                frame_path = os.path.join(frame_dir, str(msg.header.stamp.sec) + "_" + str(msg.header.stamp.nanosec) + ".jpg") 
-                cv2.imwrite(frame_path, img)    # save frame as JPEG file
+                video_out.write(img)
+
+                # frame_dir = os.path.join("frames", bag_id)
+                # if not os.path.exists(frame_dir):
+                #     os.makedirs(frame_dir)
+                # frame_path = os.path.join(frame_dir, str(msg.header.stamp.sec) + "_" + str(msg.header.stamp.nanosec) + ".jpg") 
+                # cv2.imwrite(frame_path, img)    # save frame as JPEG file
+
                 # plt.imshow(img, interpolation='nearest')
                 # plt.show()
                 # input("Press any key ...")
