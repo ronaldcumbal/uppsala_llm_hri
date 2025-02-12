@@ -1,7 +1,14 @@
 import os
 import base64
+import pathlib
 import openai
+import anthropic
+from google import genai
+from google.genai import types
 from PIL import Image
+
+# Remember to soruce ENV:
+# source ~/.zshrc
 
 # Function to encode the image
 def encode_image(image_path):
@@ -59,18 +66,64 @@ def prompt_openai(prompt, images):
     )
     print(response.choices[0])
 
-def prompt_deepsek():
-    pass
+def prompt_google(prompt, images):
+    # Gemini 1.0 Pro Vision: Each image accounts for 258 tokens. 
+    # Gemini 1.5 Flash and Gemini 1.5 Pro: If both dimensions of an image are less than or equal to 384 pixels, then 258 tokens are used. 
+    # Gemini 2.0 Flash: Image inputs with both dimensions <=384 pixels are counted as 258 tokens. 
 
-def prompt_claude():
-    pass
+    resolution = 348
 
-def prompt_claude():
-    pass
+    content = [prompt]
+    for image_path in images:
+        resized_image_path = resize_image(image_path, max_low_res=resolution)
+        b64_image = types.Part.from_bytes(data=pathlib.Path(resized_image_path).read_bytes(),
+                                          mime_type="image/jpeg")
+        content.append(b64_image)
+
+    client = genai.Client(api_key=os.environ["PERSONAL_GOOGLE_API_KEY"])
+    response = client.models.generate_content(
+        model="gemini-2.0-flash-exp",
+        contents=content)
+    print(response.text)
+
+def prompt_claude(prompt, images):
+
+    resolution = 512
+    image_media_type = "image/jpeg"
+    
+    content = []
+    for i, image_path in enumerate(images):
+        resized_image_path = resize_image(image_path, max_low_res=resolution)
+        base64_image = encode_image(resized_image_path)
+        content.append({"type": "text", "text": f"Image {i+1}:"})
+        content.append({
+                        "type": "image",
+                        "source": {
+                            "type": "base64",
+                            "media_type": image_media_type,
+                            "data": base64_image,
+                    },
+                })
+    content.append({"type": "text", "text": prompt})
+
+    client = anthropic.Anthropic()
+    message = client.messages.create(
+        model="claude-3-5-sonnet-20241022",
+        max_tokens=1024,
+        messages = [{"role": "user",
+                "content": content}])
+
+    print(message)
+
 
 if __name__ == "__main__":
     images = ["eu_hri_dataset/sequences/001/1496771406_841137459.jpg",
               "eu_hri_dataset/sequences/001/1496771407_400287081.jpg",
               "eu_hri_dataset/sequences/001/1496771408_141694645.jpg"]
+    
     prompt = "What are in these images? Is there any difference between them?"
-    prompt_openai(prompt, images)
+    # prompt = "What do these images have in common?"
+
+    # prompt_openai(prompt, images)
+    # prompt_google(prompt, images)
+    prompt_claude(prompt, images)
