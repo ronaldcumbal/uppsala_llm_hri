@@ -1,0 +1,52 @@
+<script src="https://unpkg.com/jspsych@7.3.4"></script>
+<script src="https://unpkg.com/@jspsych/plugin-survey@1.0.1"></script>
+<link rel="stylesheet" href="https://unpkg.com/@jspsych/plugin-survey@1.0.1/css/survey.css">
+
+<script>
+  $(document).ready(function () {
+    var questionContainer = $('#question{52}');
+    questionContainer.html('<div id="jspsych-container"></div>');
+
+    const jsPsych = initJsPsych({
+      on_finish: function(data) {
+        let response = jsPsych.data.get().values()[0].response.vegetablesLike;
+        
+        if (response) {
+          $('#answer{52}').val(response).trigger('change'); 
+          $('#question{52}').addClass('answered');
+          $('.ls-move-submit').prop('disabled', false);
+
+          console.warn(response);
+          // Send a message to trigger submission
+          window.postMessage("submitSurvey", "*");
+        } else {
+          console.warn("No response detected!");
+        }
+      }
+    });
+
+    const trial = {
+      type: jsPsychSurvey,
+      survey_json: {
+        showQuestionNumbers: false,
+        elements: [
+          {
+            type: 'radiogroup',
+            title: "Which of the following do you like the most?",
+            name: 'vegetablesLike',
+            choices: ['Tomato', 'Cucumber', 'Eggplant', 'Corn', 'Peas', 'Broccoli']
+          }
+        ]
+      }
+    };
+
+    jsPsych.run([trial]);
+
+    // Listen for message and trigger submission
+    window.addEventListener("message", function(e) {
+      if (e.data === "submitSurvey") {
+        $('#ls-button-submit').trigger('click'); // Simulate clicking the submit button
+      }
+    }, false);
+  });
+</script>
