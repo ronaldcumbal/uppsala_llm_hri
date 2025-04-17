@@ -1,2 +1,0 @@
-ego4d --datasets full_scale --output_directory="ego4D/narrations" --video_uids 5d8dfcfe-93e4-465e-a548-44c1442ffa29
-ego4d --datasets full_scale --output_directory="ego4D/narrations" --video_uid_file "./ego4D/narrations/video_list.txt"
