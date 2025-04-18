@@ -62,8 +62,11 @@ def extract_frames_and_clip(time, video_uid, output_uid):
     video_input_path = os.path.join(original_clips_directory, video_uid + ".mp4")
     video_output_path = os.path.join(clips_directory, output_uid + ".mp4")
 
+    print(time_start)
+    input()
+
     if not Path(video_output_path).exists():
-        command = f"ffmpeg -ss {time_start} -to {time_end} -i {video_input_path} -c copy {video_output_path}"
+        command = f"ffmpeg -i {video_input_path} -ss {time_start} -to {time_end} -c copy {video_output_path}"
         subprocess.call(command, shell=True)
 
     times = [time - 0.5, time, time + 0.5]
@@ -73,7 +76,7 @@ def extract_frames_and_clip(time, video_uid, output_uid):
     for n, t in enumerate(times):
         frames_output_path = os.path.join(frames_directory, f"{output_uid}_{n}.png")
         if not Path(frames_output_path).exists():
-            command = f"ffmpeg -ss {t} -i {video_input_path} -frames:v 1 {frames_output_path}"
+            command = f"ffmpeg -i {video_input_path} -ss {t} -frames:v 1 {frames_output_path}"
             subprocess.call(command, shell=True)
 
 def review_video_interactions(jsonfile):
