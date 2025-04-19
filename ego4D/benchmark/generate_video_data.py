@@ -70,7 +70,7 @@ def process_annotations(annotation_set):
                         video_natarrion.append("")
                         video_summary.append("")
 
-        if video_count > 1:
+        if video_count > 20:
             break
 
     dict = {'video_uid': video_uids, 
@@ -92,7 +92,7 @@ def extract_frames_and_clip(time, video_uid, output_uid):
     video_output_path = os.path.join(clips_directory, output_uid + ".mp4")
 
     if not Path(video_output_path).exists():
-        command = f"ffmpeg -ss {time_start} -to {time_end} -i {video_input_path} -c copy {video_output_path}"
+        command = f"ffmpeg -i {video_input_path} -ss {time_start} -to {time_end} -c copy {video_output_path}"
         subprocess.call(command, shell=True)
 
     times = [time - 0.5, time, time + 0.5]
