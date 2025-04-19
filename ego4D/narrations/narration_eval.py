@@ -62,9 +62,6 @@ def extract_frames_and_clip(time, video_uid, output_uid):
     video_input_path = os.path.join(original_clips_directory, video_uid + ".mp4")
     video_output_path = os.path.join(clips_directory, output_uid + ".mp4")
 
-    print(time_start)
-    input()
-
     if not Path(video_output_path).exists():
         command = f"ffmpeg -i {video_input_path} -ss {time_start} -to {time_end} -c copy {video_output_path}"
         subprocess.call(command, shell=True)
@@ -76,10 +73,10 @@ def extract_frames_and_clip(time, video_uid, output_uid):
     for n, t in enumerate(times):
         frames_output_path = os.path.join(frames_directory, f"{output_uid}_{n}.png")
         if not Path(frames_output_path).exists():
-            command = f"ffmpeg -i {video_input_path} -ss {t} -frames:v 1 {frames_output_path}"
+            command = f"ffmpeg -ss {t} -i {video_input_path} -frames:v 1 {frames_output_path}"
             subprocess.call(command, shell=True)
 
-def review_video_interactions(jsonfile):
+def extract_interactions_from_videos(jsonfile):
     videos_path = os.path.join(DIRECTORY_PATH, 'ego4D', 'narrations', 'v2', 'full_scale')    
     original_video_uids = [f.split(".mp4")[0] for f in os.listdir(videos_path) if f.endswith(".mp4")]
 
@@ -131,36 +128,6 @@ def review_video_interactions(jsonfile):
     df_data = pd.DataFrame(dict)
     df_data.to_csv(data_path, index=False)
 
-    return df_data
-
-def verify_human_presence(df_data):
-
-    print("Loading av_train.json and av_val.json file. ")
-    benchmark_train_path = os.path.join(DIRECTORY_PATH, 'ego4D', 'narrations', 'v2', 'annotations', 'av_train.json')
-    with open(benchmark_train_path, 'r') as f:
-        av_train_jsonfile = json.load(f)
-
-    benchmark_val_path = os.path.join(DIRECTORY_PATH, 'ego4D', 'narrations', 'v2', 'annotations', 'av_val.json')
-    with open(benchmark_val_path, 'r') as f:
-        av_val_jsonfile = json.load(f)
-    print("File loaded succesfully. ")
-
-
-    data_uids = list(set(df_data["video_uid"].values))
-
-    jsonfile = av_train_jsonfile
-    for video_item in jsonfile['videos']:
-        video_uid = video_item['video_uid']
-        if video_uid in data_uids:
-            print(video_uid)
-
-    jsonfile = av_val_jsonfile
-    for video_item in jsonfile['videos']:
-        video_uid = video_item['video_uid']
-        if video_uid in data_uids:
-            print(video_uid)
-
-
 if __name__ == "__main__":
     print("Loading narration.json file. ")
     annotations_file_path = os.path.join(DIRECTORY_PATH, 'ego4D', 'narrations', 'v2', 'annotations', 'narration.json')
@@ -169,5 +136,4 @@ if __name__ == "__main__":
     print("File loaded succesfully. ")
 
     find_interactions(narration_jsonfile)
-    df_data = review_video_interactions(narration_jsonfile)
-    verify_human_presence(df_data)
+    extract_interactions_from_videos(narration_jsonfile)
