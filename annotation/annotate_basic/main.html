@@ -24,28 +24,20 @@
 
     // ----->>>>> Copy code below this line to Cognition
 
-    // var video_width =  256
-    // var video_height = 256
     var required_flag = true
-
     var timeline = [];
 
-    var window_size_test = {
-      type: jsPsychBrowserCheck,
-      minimum_width: 768,
-      minimum_height: 768
+    var preload = {
+        type: jsPsychPreload,
+        images: [
+            'example0.png',
+            'example1.png',
+            'example2.png',
+            'example3.png',
+            'example4.png'
+        ]
     };
-    timeline.push(window_size_test);
-
-    // var preload = {
-    //     type: jsPsychPreload,
-    //     images: ['videos/components.png',
-    //         'videos/icons_text.png',
-    //         'videos/icons_symbol.png',
-    //         // 'https://ronaldcumbal.github.io/open_repository/videos/test.png',
-    //     ]
-    // };
-    // timeline.push(preload);
+    timeline.push(preload);
 
     /* ============================= Prolific ============================= */
     var prolific = {
@@ -67,19 +59,19 @@
     pages: [
       '<style>p {text-align: justify}</style>'+
       '<style>img {max-width: 100%; max-height: 100%;}</style>'+
-      '<style>.textbox {width: 768px;}</style>'+
+      '<style>.textbox {width: 850px;}</style>'+
       '<div class="textbox">'+
       '<h3>Objective </h3>'+
       '<p>'+
       'The purpose of this study is to understand how people interpret human interactions. ' +
-      'You will watch a series of short videos, each showing someone interacting with the person who recorded the video. ' +
+      'You will watch a series of short videos, each showing <strong>someone interacting</strong> with the person who recorded the video. ' +
       '<br>' +
       '<br>' +
       'Your task is to do two things for each video: ' +
       '<br>' +
-      '1. Describe what you think the person’s intention is.' +
+      "1. Describe what you think the <strong>person interacting</strong> is trying to do or communicate (the <strong>intention</strong>)." +
       '<br>' +
-      '2. Provide a brief description of the context in which the interaction takes place.' +
+      '2. Provide a brief description of the <strong>context</strong> in which the interaction takes place.' +
       '</p>'+
       '</div>',
 
@@ -87,24 +79,34 @@
       '<style>img {max-width: 100%; max-height: 100%;}</style>'+
       '<style>.textbox {width: 840px;}</style>'+
       '<div class="textbox">'+
-      '<h3>Descriptions </h3>'+
+      '<h3>Requirements </h3>'+
       '<p>'+
-      'In your descriptions, please use the following labels: ' +
+      'In your <strong>descriptions</strong>, please use the following labels: ' +
       '<br>' +
       '<br>' +
-      '<strong>#C</strong>: when describing the camera wearer (person recording the video with a head-mounted camera)' +
+      '<strong>#C</strong>: when describing the <strong>camera wearer</strong> (person recording the video with a head-mounted camera)' +
       '<br>' +
-      '<strong>#O</strong>: when describing actions performed by the other person of interest in the scene. ' +
+      '<strong>#O</strong>: when describing actions performed by the <strong>other person interacting</strong> in the scene. ' +
       '<br>' +
       '<br>' +
-      'Before starting, we’ll go through a few examples to help you get familiar with the task: ' +
+      'For example:' +
+      '<br>' +
+      '<img src="example0.png"></img>'+
       '</p>'+
       '</div>',
 
+      '<style>p {text-align: center}</style>'+
+      '<style>img {max-width: 100%; max-height: 100%;}</style>'+
+      '<style>.textbox {width: 840px;}</style>'+
+      '<div class="textbox">'+
+      '<p>'+
+      'Before you begin, we’ll review a few examples to get you familiar with the task and interface: ' +
+      '</p>'+
+      '</div>',
 
       '<style>p {text-align: justify}</style>'+
       '<style>img {max-width: 100%; max-height: 100%;}</style>'+
-      '<style>.textbox {width: 768px;}</style>'+
+      '<style>.textbox {width: 1024px;}</style>'+
       '<div class="textbox">'+
       '<h3>Example 1: </h3>'+
       '<img src="example1.png"></img>'+
@@ -115,13 +117,13 @@
       '<p>'+
       'In this example, a single person is clearly visible on screen. '+
       'You can see that this person (#O) is handing a card to the camera wearer (#C). ' +
-      'The context shows that they are playing a board game. ' +
+      'The context shows that they are interacting inside a living room. ' +
       '</p>'+
       '</div>',
 
       '<style>p {text-align: justify}</style>'+
       '<style>img {max-width: 100%; max-height: 100%;}</style>'+
-      '<style>.textbox {width: 768px;}</style>'+
+      '<style>.textbox {width: 1024px;}</style>'+
       '<div class="textbox">'+
       '<h3>Example 2: </h3>'+
       '<img src="example2.png"></img>'+
@@ -138,7 +140,7 @@
 
       '<style>p {text-align: justify}</style>'+
       '<style>img {max-width: 100%; max-height: 100%;}</style>'+
-      '<style>.textbox {width: 768px;}</style>'+
+      '<style>.textbox {width: 1024px;}</style>'+
       '<div class="textbox">'+
       '<h3>Example 3: </h3>'+
       '<img src="example3.png"></img>'+
@@ -157,7 +159,7 @@
 
       '<style>p {text-align: justify}</style>'+
       '<style>img {max-width: 100%; max-height: 100%;}</style>'+
-      '<style>.textbox {width: 768px;}</style>'+
+      '<style>.textbox {width: 1024px;}</style>'+
       '<div class="textbox">'+
       '<h3>Example 4: </h3>'+
       '<img src="example4.png"></img>'+
@@ -168,12 +170,12 @@
       '<p>'+
       'The quality of the video is low, making it harder to interpret. '+
       'As with the previous example, do your best to describe the interaction. '+
-      "If you're unable to confidently determine the intention or context, select the UNSURE option. "+
+      "If you're unsure about the intention or context, please skip the video by selecting the <strong>Skip</strong> option. "+
       'You’ll then be asked to briefly explain why the video was unclear to you. ' +
       '</p>'+
       '</div>',
 
-      "Let’s start with the taks."
+      "Let’s start with the annotation."
       ],
         show_clickable_nav: true,
         allow_backward: false,
@@ -184,16 +186,29 @@
     /* ============================= Task ============================= */
 
     var validation_videos = [
-      // "val_01.mp4",
-      // "val_02.mp4",
-      // "val_03.mp4"
+      "edea7771-89a8-4bcf-99c2-f102aa3d51dd_36990.mp4",
+      "94c56fdd-9245-42db-8c58-252074e1521c_56623.mp4",
+      "c8b61175-cfa4-44f9-a88b-76609ffa4ca3_57061.mp4",
     ];
 
     var data_videos = [
-      "videos/batch_0_test/168f91fd-53c2-4eee-9d2d-e25e1ad73438_17735.mp4",
-      "videos/batch_0_test/3e92e0d2-2468-47f1-bbdf-1ebe1eb736c8_11796.mp4",
-      "videos/batch_0_test/6c9d124f-2660-497d-8f5f-bf864de61f01_43.mp4",
-      "videos/batch_0_test/6fd90f8d-7a4d-425d-a812-3268db0b0342_75495.mp4",
+      "07774a7c-c5ed-4133-991f-926a316068a4_118.mp4",
+      "5204624f-90ac-47bf-a71a-486d43f4351c_225.mp4",
+      "50895f7f-5667-4b43-94c1-d7b4b9e238e7_111.mp4",
+      "06592f50-7f29-4ca9-94a9-1b6c389d50ea_200.mp4",
+      "dce1d8b4-2c29-4fec-a343-77885899c434_30.mp4",
+      "ae6466f8-1a53-4cb3-8718-96f78f391b4b_0.mp4",
+      "a6ea1a46-a7c4-41c8-b26d-08703ecd7690_192.mp4",
+      "0d4efcc9-a336-46f9-a1db-0623b5be2869_196.mp4",
+      "32464967-b0f2-4b2e-a57c-7f774e7056a7_295.mp4",
+      "3aed7bbd-75f0-45ef-b9cc-7f5ff6f7fbbf_141.mp4",
+      "1f12c871-9b3a-4611-a2b4-9c39059052a4_100.mp4",
+      "e37c82c5-483f-4e68-8bf3-2a22dcef0b1e_110.mp4",
+      "228eb504-c1b3-43b9-818e-2f7e539a259b_138.mp4",
+      "6798a65f-d79a-413b-baca-115f09caf0c4_33.mp4",
+      "57b6455e-2acb-4076-b8c4-1f2cdae97185_162.mp4",
+      "de82a6f3-1a55-4996-ae68-35032678ff66_134.mp4",
+      "b171dcaf-94f2-4bcd-8695-b2648bed60e1_14.mp4",
     ];
 
     // Insert validation videos at equally spaced locations
@@ -207,7 +222,7 @@
     }
 
     for (var i = 0; i < data_videos.length; i++) {
-      let videoFile = data_videos[i];  // Use let for block scope
+      let videoFile = data_videos[i];
 
       let annotation_trial = {
         type: jsPsychSurvey,
@@ -224,61 +239,60 @@
               startWithNewLine: false,
             },
             {
+              type: "radiogroup",
+              name: "skip_video",
+              title: "Do you want to skip this video because you're unsure?",
+              isRequired: required_flag,
+              choices: ["No", "Yes"],
+              defaultValue: "No",
+              colCount: 4,
+              data: { trial_name: 'skip_video' },
+            },
+            {
               type: "comment",
               name: "ans_intention",
               title: "What do you think is the intention of the main person interacting in the video?",
-              description: "Use #C: for actions by the camera wearer and #O: for actions by the other main person in the scene.",
+              description: "Use #C: for the camera wearer and #O: for the other interacting person in the scene.",
               rows: 1,
               autoGrow: true,
               allowResize: false, 
-              data: {trial_name: 'ans_intention'}
+              visibleIf: "{skip_video} = 'No'",
+              data: { trial_name: 'ans_intention' }
             },
             {
               type: "comment",
               name: "ans_context",
               title: "What is the context or situation shown in the video?",
-              description: "Use #C: for actions by the camera wearer and #O: for actions by the other main person in the scene.",
+              description: "Use #C: for the camera wearer and #O: for the other interacting person in the scene.",
               rows: 1,
               autoGrow: true,
               allowResize: false, 
-              data: {trial_name: 'ans_context'}
+              visibleIf: "{skip_video} = 'No'",
+              data: { trial_name: 'ans_context' }
             },
             {
-              type: "radiogroup",
-              name: "ans_unsure",
-              title: "Are you UNSURE about the video?",
-              choices: ["Yes"],
-              isRequired: false, 
-              data: {trial_name: 'ans_unsure'}
-            }
-          ]
-        }
-      };
-
-      // Conditional text area if UNSURE is selected
-      let unsure_followup = {
-        type: jsPsychSurvey,
-        survey_json: {
-          showQuestionNumbers: false,
-          completeText: 'Continue',
-          elements: [
-            {
               type: "comment",
-              name: "ans_unsure_explanation",
-              title: "Please explain why you were unsure about the video.",
-              rows: 5,
+              name: "skip_reason",
+              title: "Why did you skip this video?",
+              description: "Please briefly explain why you were unsure about this video.",
+              visibleIf: "{skip_video} = 'Yes'",
+              rows: 1,
               autoGrow: true,
-              allowResize: true
+              allowResize: false,
+              data: { trial_name: 'skip_reason' }
             }
           ]
         },
-        conditional_function: function() {
-          let last_response = jsPsych.data.get().last(1).values()[0];
-          return last_response.response.unsure === "UNSURE";
+        on_finish: function(data) {
+          const skipped = data.response.skip_video === "Yes";
+          console.log("Skipped video? ", skipped);
+          if (skipped) {
+            console.log("Reason: ", data.response.skip_reason);
+          }
         }
       };
 
-      timeline.push(annotation_trial, unsure_followup);
+      timeline.push(annotation_trial);
     }
 
 
@@ -293,10 +307,8 @@
       html: 
           '<style>p {text-align:left; spellcheck=false;} input[type="text"] {width:8ch;} fieldset {border:1px solid #999;box-shadow:2px 2px 5px #999;} legend {background:#fff;text-align:left;font-size:110%;}</style>'+
           '<span style="font-size:125%; font-weight:bold;">Exit Survey</span>'+
-          '<p>Would you be interested in doing similar tasks in the future?</p>'+
-          '<p style="text-align:left;"><textarea name="feedback" rows="3" style="width:90%;" required></textarea></p>'+
           '<p>If you have any comments, please write them here.</p>'+
-          '<p style="text-align:left;"><textarea name="comments" rows="3" style="width:90%;"></textarea></p>'+
+          '<p style="text-align:left;"><textarea name="comments" rows="3" style="width:100%;"></textarea></p>'+
           '',
       data: {trial_name: 'exit_survey'},
     };
