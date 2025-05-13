@@ -57,7 +57,6 @@ def process_annotations(annotation_set):
                     time_end = item['end_time']
                     frame_start = int(time_start * 30)
 
-
                     if time_end - time_start > 2:
                         video_count+=1
                         output_uid = f"{clip_uid}_{str(int(time_start))}"
@@ -69,9 +68,6 @@ def process_annotations(annotation_set):
                         video_frames.append(frame_start)
                         video_natarrion.append("")
                         video_summary.append("")
-
-        if video_count > 20:
-            break
 
     dict = {'video_uid': video_uids, 
             'clip_uid': video_labels, 
@@ -111,4 +107,9 @@ if __name__ == "__main__":
 
     data_path = os.path.join(DIRECTORY_PATH, 'ego4D', 'benchmark', 'subset', 'data.csv')
     df_data = pd.concat([df_train, df_val], ignore_index=True)
+
+    ## Remove duplicates
+    df_data = df_data.drop_duplicates(subset=['clip_uid'], keep='last')
+    df_data = df_data.reset_index(drop=True)
+
     df_data.to_csv(data_path, index=False)

@@ -63,9 +63,9 @@ def restore_videos(source_dir, output_base="batch", list_filename="video_list.tx
 
 if __name__ == "__main__":
     clips_directory = os.path.join(DIRECTORY_PATH, 'ego4D', 'benchmark', 'subset', 'clips')
-    # organize_videos(clips_directory)
+    # organize_videos(clips_directory, videos_per_folder=17)
     # restore_videos(clips_directory)
 
-    # clips_directory = os.path.join(DIRECTORY_PATH, 'ego4D', 'narrations', 'subset', 'clips')
-    # organize_videos(clips_directory)
+    clips_directory = os.path.join(DIRECTORY_PATH, 'ego4D', 'narrations', 'subset', 'clips')
+    # organize_videos(clips_directory, videos_per_folder=3)
     # restore_videos(clips_directory)
